@@ -1,12 +1,11 @@
 import {View, StyleSheet, Text} from 'react-native'
+import Todos from './Todos';
 
 export default function Homescreen()
 {
     return(
         <View style={styles.container}>
-            <Text>
-                This is the Homescreen
-            </Text>
+            <Todos/>
         </View>
     );
 }
