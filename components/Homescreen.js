@@ -1,17 +1,30 @@
-import {View, StyleSheet, Text} from 'react-native'
+import { View, StyleSheet, ScrollView, SafeAreaView, Platform, StatusBar, Dimensions } from 'react-native';
 import Todos from './Todos';
 
-export default function Homescreen()
-{
-    return(
-        <View style={styles.container}>
-            <Todos/>
-        </View>
+const { width } = Dimensions.get('window'); // 👈 Gets screen width
+
+export default function Homescreen() {
+    return (
+        <SafeAreaView style={styles.container}>
+            <ScrollView contentContainerStyle={styles.scrollContainer}>
+                <Todos />
+                <Todos />
+                <Todos />
+                <Todos />
+            </ScrollView>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    container:{
-        flex: 1, justifyContent: 'center', alignItems: 'center',
-    }
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+    },
+    scrollContainer: {
+        padding: 16,
+        width: width,
+        alignSelf: 'center',
+    },
 });
