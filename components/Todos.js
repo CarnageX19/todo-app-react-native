@@ -1,6 +1,7 @@
 import { View, StyleSheet, Text,TouchableOpacity } from 'react-native';
 import storageService from '../services/storage';
 import { useSelector } from 'react-redux';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function Todos({todo, onUpdate}) {
     const currentUser = useSelector((state) => state.user.currentUser);
@@ -34,6 +35,15 @@ export default function Todos({todo, onUpdate}) {
 
     return (
         <View style={styles.card}>
+            <View style={styles.iconContainer}>
+                <TouchableOpacity style={styles.iconButton}>
+                    <Ionicons name="pencil" size={20} color="#444" />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.iconButton}>
+                    <Ionicons name="trash" size={20} color="#D32F2F" />
+                </TouchableOpacity>
+            </View>
+
             <Text style={styles.text}>{todo.title} </Text>
             <Text style={styles.desc}>{todo.desc}</Text>
             <Text style={styles.dateAdded}>Date Added: {new Date(todo.dateAdded).toDateString()}</Text>
@@ -105,4 +115,15 @@ const styles = StyleSheet.create({
         color: '#D32F2F', // dark red
         fontWeight: 'bold',
       },
+      iconContainer: {
+        position: 'absolute',
+        top: 10,
+        right: 10,
+        flexDirection: 'row',
+        gap: 12,
+      },
+      
+      iconButton: {
+        padding: 4,
+      },      
 });
