@@ -21,8 +21,8 @@ This app uses **React Native with Expo** for building the UI and leverages **Red
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/todo-react-native.git
-   cd todo-react-native
+   git clone https://github.com/CarnageX19/todo-app-react-native.git
+   cd todo-app-react-native
    ```
 
 2. **Install dependencies:**
