@@ -1,11 +1,13 @@
-import { View, StyleSheet, ScrollView, SafeAreaView, Platform, StatusBar, Dimensions } from 'react-native';
+import { StyleSheet, ScrollView, SafeAreaView, Platform, StatusBar, Dimensions } from 'react-native';
 import Todos from './Todos';
+import Header from './Header';
 
-const { width } = Dimensions.get('window'); // 👈 Gets screen width
+const { width } = Dimensions.get('window');
 
 export default function Homescreen() {
     return (
         <SafeAreaView style={styles.container}>
+            <Header />
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 <Todos />
                 <Todos />
