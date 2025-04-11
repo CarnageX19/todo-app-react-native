@@ -1,9 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class StorageService {
-  constructor() {
-    this.currentUser = 'dummy'; 
-  }
 
   getUserKey = (user) => `todos-${user}`;
 
