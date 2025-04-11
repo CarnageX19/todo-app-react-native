@@ -1,7 +1,10 @@
 # React Native To-Do App
 
+An apk of the app for installing in android can be found [here](https://expo.dev/accounts/aritrakdgg/projects/todo-app/builds/33039d78-deba-4992-a516-0d1d8a0f5db8)
+
 A simple React Native To-Do List application built using **Expo**, featuring local data persistence, basic authentication, and smooth task management.
 
+<img src="demo.gif">
 ---
 
 ## Architecture & Approach
