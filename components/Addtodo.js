@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Platform, ToastAndroid, Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Ionicons } from '@expo/vector-icons';
+import storageService from '../services/storage';
 
 export default function Addtodo() {
   const navigation = useNavigation();
@@ -17,11 +18,26 @@ export default function Addtodo() {
 
   const [titleError, setTitleError] = useState('');
 
-  const handleSave = () => {
+  const handleSave = async() => {
     if (title.trim() === '') {
       setTitleError('Title is required');
       return;
     }   
+    const todo = {
+        title,
+        desc: description,
+        deadline,
+        dateAdded,
+    };
+      await storageService.addTodo(todo);
+
+      if (Platform.OS === 'android') {
+        ToastAndroid.show('Todo saved!', ToastAndroid.SHORT);
+      } else {
+        Alert.alert('Todo saved!');
+      }
+
+      navigation.navigate('Home')
   };
 
   return (
