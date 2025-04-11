@@ -15,6 +15,15 @@ export default function Addtodo() {
   const [showDeadlinePicker, setShowDeadlinePicker] = useState(false);
   const [showDateAddedPicker, setShowDateAddedPicker] = useState(false);
 
+  const [titleError, setTitleError] = useState('');
+
+  const handleSave = () => {
+    if (title.trim() === '') {
+      setTitleError('Title is required');
+      return;
+    }   
+  };
+
   return (
     <View style={styles.container}>
 
@@ -22,7 +31,7 @@ export default function Addtodo() {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="close" size={28} color="black" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => { /* does nothing now */ }}>
+        <TouchableOpacity onPress={() => handleSave()}>
           <Ionicons name="checkmark" size={28} color="black" />
         </TouchableOpacity>
       </View>
@@ -31,8 +40,12 @@ export default function Addtodo() {
         style={styles.input}
         placeholder="Title"
         value={title}
-        onChangeText={setTitle}
+        onChangeText={(text) => {
+        setTitle(text);
+        if (text.trim().length > 0) setTitleError('');
+  }}
       />
+      {titleError ? <Text style={styles.error}>{titleError}</Text> : null}
 
       <TextInput
         style={styles.input}
