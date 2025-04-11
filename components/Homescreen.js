@@ -1,4 +1,4 @@
-import { StyleSheet, ScrollView, SafeAreaView, Platform, StatusBar, Dimensions } from 'react-native';
+import { Text, TouchableOpacity, View, StyleSheet, ScrollView, SafeAreaView, Platform, StatusBar, Dimensions } from 'react-native';
 import { useEffect, useState } from 'react';
 import Todos from './Todos';
 import Header from './Header';
@@ -20,13 +20,44 @@ export default function Homescreen() {
         fetchTodos();
     },[currentUser])
     
+    const [statusFilter, setStatusFilter] = useState('All');
+
     return (
         <SafeAreaView style={styles.container}>
             <Header />
+            <View style={styles.filterContainer}>
+            {['All', 'Pending', 'Completed'].map((status) => (
+                <TouchableOpacity
+                key={status}
+                onPress={() => setStatusFilter(status)}
+                style={[
+                    styles.filterButton,
+                    statusFilter === status && styles.activeFilterButton,
+                ]}
+                >
+                <Text
+                    style={[
+                    styles.filterText,
+                    statusFilter === status && styles.activeFilterText,
+                    ]}
+                >
+                    {status}
+                </Text>
+                </TouchableOpacity>
+            ))}
+            </View>
+
+
             <ScrollView contentContainerStyle={styles.scrollContainer}>
-                {todos.map((todo,index)=>{
-                    return <Todos todo={todo} key={todo.id} onUpdate={fetchTodos}/>
-                })}
+            {todos
+            .filter((todo) => {
+                if (statusFilter === 'All') return true;
+                if (statusFilter === 'Completed') return todo.finished === 1;
+                if (statusFilter === 'Pending') return todo.finished === 0;
+            })
+            .map((todo) => (
+                <Todos todo={todo} key={todo.id} onUpdate={fetchTodos} />
+            ))}
             </ScrollView>
         </SafeAreaView>
     );
@@ -43,4 +74,31 @@ const styles = StyleSheet.create({
         width: width,
         alignSelf: 'center',
     },
+    filterContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginBottom: 12,
+        marginTop: 10,
+        paddingHorizontal: 10,
+      },
+      
+      filterButton: {
+        paddingVertical: 6,
+        paddingHorizontal: 14,
+        backgroundColor: '#e0e0e0',
+        borderRadius: 8,
+      },
+      
+      activeFilterButton: {
+        backgroundColor: '#4CAF50',
+      },
+      
+      filterText: {
+        fontWeight: 'bold',
+        color: '#333',
+      },
+      
+      activeFilterText: {
+        color: '#fff',
+      },      
 });
