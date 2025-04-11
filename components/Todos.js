@@ -1,9 +1,9 @@
 import { View, StyleSheet, Text } from 'react-native';
 
-export default function Todos() {
+export default function Todos({todo}) {
     return (
         <View style={styles.card}>
-            <Text style={styles.text}> Have to finish some stuff </Text>
+            <Text style={styles.text}> {todo.title} </Text>
         </View>
     );
 }

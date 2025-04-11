@@ -1,18 +1,31 @@
 import { StyleSheet, ScrollView, SafeAreaView, Platform, StatusBar, Dimensions } from 'react-native';
+import { useEffect, useState } from 'react';
 import Todos from './Todos';
 import Header from './Header';
+import { useSelector } from 'react-redux';
+import storageService from '../services/storage';
 
 const { width } = Dimensions.get('window');
 
 export default function Homescreen() {
+    const currentUser = useSelector((state)=>state.user.currentUser)
+    const [todos,setTodos] = useState([]);
+
+    useEffect(()=>{
+        const fetchTodos = async()=>{
+            const storedTodos =await storageService.getTodos(currentUser);
+            setTodos(storedTodos || [])
+        }
+        fetchTodos();
+    },[currentUser])
+    
     return (
         <SafeAreaView style={styles.container}>
             <Header />
             <ScrollView contentContainerStyle={styles.scrollContainer}>
-                <Todos />
-                <Todos />
-                <Todos />
-                <Todos />
+                {todos.map((todo,index)=>{
+                    return <Todos todo={todo} key={index}/>
+                })}
             </ScrollView>
         </SafeAreaView>
     );
