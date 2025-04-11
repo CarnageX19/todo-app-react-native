@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import {Homescreen, Addtodo} from './components';
+import {Homescreen, Addtodo, Loginscreen} from './components';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from 'react-redux';
@@ -14,10 +14,11 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}> 
       <Provider store={store}>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator initialRouteName="Login">
+            <Stack.Screen name="Login" component={Loginscreen} options={{ headerShown: false }} />
             <Stack.Screen name="Home" component={Homescreen} options={{headerShown:false}}/>
             <Stack.Screen name="Addtodo" component={Addtodo} options={{title:"Add new stuff to do"}}/>
-          </Stack.Navigator>
+        </Stack.Navigator>
           <StatusBar style="auto" />
         </NavigationContainer>
       </Provider>
