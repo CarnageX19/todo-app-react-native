@@ -84,6 +84,21 @@ export default function Todos({todo, onUpdate}) {
         setSelectedDate(date);
     };
 
+    const toggleFinished = async () => {
+      const updatedTodo = { ...todo, finished: todo.finished ? 0 : 1 };
+      try {
+        const todos = await storageService.getTodos(currentUser);
+        const updatedTodoList = todos.map((td) =>
+          td.id === todo.id ? updatedTodo : td
+        );
+        await storageService.updateTodos(updatedTodoList, currentUser);
+        onUpdate(); 
+      } 
+      catch (error) {
+        console.error('Unable to toggle finished state:', error);
+      }
+    };
+    
 
     return (
         <View>
@@ -188,11 +203,21 @@ export default function Todos({todo, onUpdate}) {
                 <Text style={styles.deadline}>Deadline: {new Date(todo.deadline).toDateString()}</Text>
                 )}
                 
-                {todo.finished === 0 && (
-                    <TouchableOpacity style={styles.finishButton} onPress={markAsFinished}>
-                        <Text style={styles.finishButtonText}>Mark as Finished</Text>
-                    </TouchableOpacity>
-                )}
+                <TouchableOpacity
+                style={styles.finishCheckbox}
+                onPress={() => toggleFinished()}
+                >
+                  <Ionicons
+                    name={todo.finished ? 'checkbox' : 'square-outline'}
+                    size={20}
+                    color={todo.finished ? '#4CAF50' : '#555'}
+                    style={{ marginRight: 8 }}
+                  />
+                  <Text style={styles.finishCheckboxText}>
+                    {todo.finished ? 'Finished' : 'Mark as Finished'}
+                  </Text>
+                </TouchableOpacity>
+
             </View>
         </View>
     );
@@ -327,4 +352,19 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         fontSize: 14,
       },
+      finishCheckbox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 12,
+        paddingVertical: 10,
+        paddingHorizontal: 12,
+        backgroundColor: '#e0e0e0',
+        borderRadius: 10,
+      },
+      
+      finishCheckboxText: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: '#333',
+      },      
 });
