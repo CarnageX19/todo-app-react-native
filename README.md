@@ -4,6 +4,8 @@ An apk of the app for installing in android can be found [here](https://expo.dev
 
 A simple React Native To-Do List application built using **Expo**, featuring local data persistence, basic authentication, and smooth task management.
 
+
+Demo GIF:
 <img src="demo.gif">
 ---
 
