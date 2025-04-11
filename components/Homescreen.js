@@ -1,9 +1,10 @@
-import { Text, TouchableOpacity, View, StyleSheet, ScrollView, SafeAreaView, Platform, StatusBar, Dimensions } from 'react-native';
+import { FlatList,Text, TouchableOpacity, View, StyleSheet, ScrollView, SafeAreaView, Platform, StatusBar, Dimensions } from 'react-native';
 import { useEffect, useState } from 'react';
 import Todos from './Todos';
 import Header from './Header';
 import { useSelector } from 'react-redux';
 import storageService from '../services/storage';
+import { Swipeable } from 'react-native-gesture-handler';
 
 const { width } = Dimensions.get('window');
 
@@ -46,19 +47,35 @@ export default function Homescreen() {
                 </TouchableOpacity>
             ))}
             </View>
+            <Text style={styles.swipeHint}>Swipe Left to Delete</Text>
 
-
-            <ScrollView contentContainerStyle={styles.scrollContainer}>
-            {todos
-            .filter((todo) => {
+            <FlatList
+            contentContainerStyle={styles.scrollContainer}
+            data={todos.filter((todo) => {
                 if (statusFilter === 'All') return true;
                 if (statusFilter === 'Completed') return todo.finished === 1;
                 if (statusFilter === 'Pending') return todo.finished === 0;
-            })
-            .map((todo) => (
-                <Todos todo={todo} key={todo.id} onUpdate={fetchTodos} />
-            ))}
-            </ScrollView>
+            })}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+                <Swipeable
+                renderRightActions={() => (
+                    <TouchableOpacity
+                    style={styles.swipeDeleteButton}
+                    onPress={async () => {
+                        const updatedTodos = todos.filter((t) => t.id !== item.id);
+                        await storageService.updateTodos(updatedTodos, currentUser);
+                        setTodos(updatedTodos);
+                    }}
+                    >
+                    <Text style={styles.swipeDeleteText}>Delete</Text>
+                    </TouchableOpacity>
+                )}
+                >
+                    <Todos todo={item} onUpdate={fetchTodos} />
+                </Swipeable>
+  )}
+/>
         </SafeAreaView>
     );
 }
@@ -101,4 +118,25 @@ const styles = StyleSheet.create({
       activeFilterText: {
         color: '#fff',
       },      
+      swipeDeleteButton: {
+        backgroundColor: '#FF5252',
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+        paddingHorizontal: 20,
+        marginVertical: 8,
+        borderRadius: 10,
+      },
+      
+      swipeDeleteText: {
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 16,
+      },
+      swipeHint: {
+        textAlign: 'center',
+        color: '#666',
+        fontSize: 14,
+        marginBottom: 10,
+      },
+      
 });
