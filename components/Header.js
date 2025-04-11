@@ -1,15 +1,18 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Header() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>To Do List</Text>
-      <TouchableOpacity onPress={() => { }}>
-        <Ionicons name="add-circle-outline" size={32} color="#007bff" />
-      </TouchableOpacity>
-    </View>
-  );
+    const navigation = useNavigation();
+
+    return (
+        <View style={styles.container}>
+        <Text style={styles.title}>To Do List</Text>
+        <TouchableOpacity onPress={() => { return navigation.navigate('Addtodo') }}>
+            <Ionicons name="add-circle-outline" size={32} color="#007bff" />
+        </TouchableOpacity>
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({

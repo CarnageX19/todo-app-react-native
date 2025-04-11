@@ -6,5 +6,6 @@ import Addtodo from "./Addtodo";
 export{
     Homescreen,
     Todos,
-    Header
+    Header,
+    Addtodo
 }
