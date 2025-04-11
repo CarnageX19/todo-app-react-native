@@ -37,7 +37,7 @@ export default function Todos({todo, onUpdate}) {
             <Text style={styles.text}>{todo.title} </Text>
             <Text style={styles.desc}>{todo.desc}</Text>
             <Text style={styles.dateAdded}>Date Added: {new Date(todo.dateAdded).toDateString()}</Text>
-            {isDeadlinePassed() ? (
+            {isDeadlinePassed() && todo.finished === 0 ? (
             <Text style={styles.deadlinePassed}>⚠️ Deadline Passed: {new Date(todo.deadline).toDateString()}</Text>
             ) : (
             <Text style={styles.deadline}>Deadline: {new Date(todo.deadline).toDateString()}</Text>
