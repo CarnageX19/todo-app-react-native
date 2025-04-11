@@ -14,7 +14,7 @@ export default function LoginScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>
-
+      <Text>Dummy Login Credentials Only</Text>
       <TextInput
         style={styles.input}
         value="dummy"

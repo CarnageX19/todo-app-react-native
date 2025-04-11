@@ -25,15 +25,6 @@ class StorageService {
     }
   }
 
-  async clearTodos(user) {
-    try {
-      await AsyncStorage.removeItem(this.getUserKey(user));
-    } catch (error) {
-      console.error('Failed to clear todos:', error);
-      throw error;
-    }
-  }
-
   async updateTodos(todos, user) {
     try {
       await AsyncStorage.setItem(this.getUserKey(user), JSON.stringify(todos));
