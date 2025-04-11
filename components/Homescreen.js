@@ -10,12 +10,13 @@ const { width } = Dimensions.get('window');
 export default function Homescreen() {
     const currentUser = useSelector((state)=>state.user.currentUser)
     const [todos,setTodos] = useState([]);
+    
+    const fetchTodos = async()=>{
+        const storedTodos =await storageService.getTodos(currentUser);
+        setTodos(storedTodos || [])
+    }
 
     useEffect(()=>{
-        const fetchTodos = async()=>{
-            const storedTodos =await storageService.getTodos(currentUser);
-            setTodos(storedTodos || [])
-        }
         fetchTodos();
     },[currentUser])
     
@@ -24,7 +25,7 @@ export default function Homescreen() {
             <Header />
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 {todos.map((todo,index)=>{
-                    return <Todos todo={todo} key={index}/>
+                    return <Todos todo={todo} key={todo.id} onUpdate={fetchTodos}/>
                 })}
             </ScrollView>
         </SafeAreaView>

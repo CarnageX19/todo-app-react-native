@@ -4,9 +4,12 @@ import { useNavigation } from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Ionicons } from '@expo/vector-icons';
 import storageService from '../services/storage';
+import uuid from 'react-native-uuid';
+import { useSelector } from 'react-redux';
 
 export default function Addtodo() {
   const navigation = useNavigation();
+  const currentUser = useSelector((state)=>state.user.currentUser)
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -28,8 +31,16 @@ export default function Addtodo() {
         desc: description,
         deadline,
         dateAdded,
+        id:uuid.v4(),
+        user:currentUser,
+        finished:0
     };
-      await storageService.addTodo(todo);
+
+      try {
+        await storageService.addTodo(todo,currentUser);
+      } catch (error) {
+          console.error(`Unable to store todo: ${error}`)
+      }
 
       if (Platform.OS === 'android') {
         ToastAndroid.show('Todo saved!', ToastAndroid.SHORT);

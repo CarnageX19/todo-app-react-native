@@ -4,7 +4,7 @@ class StorageService {
 
   getUserKey = (user) => `todos-${user}`;
 
-  async getTodos(user = this.currentUser) {
+  async getTodos(user) {
     try {
       const todos = await AsyncStorage.getItem(this.getUserKey(user));
       return todos ? JSON.parse(todos) : [];
@@ -14,7 +14,7 @@ class StorageService {
     }
   }
 
-  async addTodo(todo, user = this.currentUser) {
+  async addTodo(todo, user) {
     try {
       const todos = await this.getTodos(user);
       const updatedTodos = [...todos, todo];
@@ -25,11 +25,20 @@ class StorageService {
     }
   }
 
-  async clearTodos(user = this.currentUser) {
+  async clearTodos(user) {
     try {
       await AsyncStorage.removeItem(this.getUserKey(user));
     } catch (error) {
       console.error('Failed to clear todos:', error);
+      throw error;
+    }
+  }
+
+  async updateTodos(todos, user) {
+    try {
+      await AsyncStorage.setItem(this.getUserKey(user), JSON.stringify(todos));
+    } catch (error) {
+      console.error('Failed to save todos:', error);
       throw error;
     }
   }
